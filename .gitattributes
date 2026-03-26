@@ -1,0 +1,5 @@
+# Keep LF endings stable across environments to reduce noisy merge conflicts
+* text=auto eol=lf
+
+# Lockfile should be merged manually when conflicts happen
+frontend/package-lock.json merge=ours
