@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgis/postgis:15-3.4
+    container_name: tramplin_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tramplin}
+      POSTGRES_USER: ${POSTGRES_USER:-tramplin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tramplin}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  backend:
+    build: ./backend
+    container_name: tramplin_backend
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - '8000:8000'
+
+  frontend:
+    build: ./frontend
+    container_name: tramplin_frontend
+    depends_on:
+      - backend
+    ports:
+      - '3000:80'
+
+volumes:
+  postgres_data:
